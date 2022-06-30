@@ -21,57 +21,73 @@ type Action =
   | { type: 'ToggleTodoCompletion'; id: string }
   | { type: 'DeleteTodo'; id: string }
 
+const editInputReducer = (
+  state: State,
+  action: Action & { type: 'EditInput' }
+) => {
+  const { text } = action
+  return {
+    ...state,
+    todoInput: text,
+  }
+}
+
+const addTodoReducer = (state: State, action: Action & { type: 'AddTodo' }) => {
+  const { id, description } = action
+  return {
+    ...state,
+    todos: {
+      ...state.todos,
+      [id]: {
+        description,
+        completed: false,
+      },
+    },
+  }
+}
+
+const deleteTodoReducer = (
+  state: State,
+  action: Action & { type: 'DeleteTodo' }
+) => {
+  const { id } = action
+  const { [id]: deleted, ...rest } = state.todos
+  return {
+    ...state,
+    todos: rest,
+  }
+}
+
+const toggleTodoCompletionReducer = (
+  state: State,
+  action: Action & { type: 'ToggleTodoCompletion' }
+) => {
+  const { id } = action
+  const { [id]: todo, ...rest } = state.todos
+  if (todo === undefined) return state
+  return {
+    ...state,
+    todos: {
+      ...rest,
+      [id]: {
+        ...todo,
+        completed: !todo.completed,
+      },
+    },
+  }
+}
+
 const reducer = (state: State, action: Action): State => {
-  if (action.type === 'AddTodo') {
-    const { id, description } = action
-    return {
-      ...state,
-      todos: {
-        ...state.todos,
-        [id]: {
-          description,
-          completed: false,
-        },
-      },
-    }
+  switch (action.type) {
+    case 'EditInput':
+      return editInputReducer(state, action)
+    case 'AddTodo':
+      return addTodoReducer(state, action)
+    case 'ToggleTodoCompletion':
+      return toggleTodoCompletionReducer(state, action)
+    case 'DeleteTodo':
+      return deleteTodoReducer(state, action)
   }
-
-  if (action.type === 'EditInput') {
-    const { text } = action
-    return {
-      ...state,
-      todoInput: text,
-    }
-  }
-
-  if (action.type === 'DeleteTodo') {
-    const { id } = action
-    const { [id]: deletedTodo, ...todos } = state.todos
-    return {
-      ...state,
-      todos,
-    }
-  }
-
-  if (action.type === 'ToggleTodoCompletion') {
-    const { id } = action
-    const { [id]: todo, ...todos } = state.todos
-    if (todo === undefined) return state
-    return {
-      ...state,
-      todos: {
-        ...todos,
-        [id]: {
-          ...todo,
-          completed: !todo.completed,
-        },
-      },
-    }
-  }
-
-  throw new Error('this cannot be happening')
-
-  return state
 }
 
 export default function Todo() {
