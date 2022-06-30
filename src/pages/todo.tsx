@@ -1,58 +1,6 @@
-import create from 'zustand'
+import { useStore } from '../page-elements/todo/state'
 
-// todo: style it and refactor it into multiple files
-
-interface Todo {
-  description: string
-  completed: boolean
-}
-
-interface State {
-  todos: { [id: string]: Todo }
-  todoInput: string
-  editInput: (text: string) => void
-  addTodo: (id: string, description: string) => void
-  toggleTodoCompletion: (id: string) => void
-  deleteTodo: (id: string) => void
-}
-
-const useStore = create<State>((set) => ({
-  todos: {},
-  todoInput: '',
-  editInput: (text: string) => set((state) => ({ ...state, todoInput: text })),
-  addTodo: (id, description) =>
-    set((state) => ({
-      todoInput: '',
-      todos: {
-        ...state.todos,
-        [id]: {
-          description,
-          completed: false,
-        },
-      },
-    })),
-  toggleTodoCompletion: (id) =>
-    set((state) => {
-      const currentTodo = state.todos[id]
-      if (currentTodo === undefined) return {}
-      return {
-        todos: {
-          ...state.todos,
-          [id]: {
-            ...currentTodo,
-            completed: !currentTodo.completed,
-          },
-        },
-      }
-    }),
-  deleteTodo: (id) =>
-    set((state) => {
-      const { [id]: todo, ...rest } = state.todos
-      return {
-        todos: rest,
-      }
-    }),
-}))
+// todo: make this more beautiful
 
 export default function Todo() {
   const state = useStore()
@@ -78,8 +26,8 @@ export default function Todo() {
 
   return (
     <div className="grid justify-center">
-      <h1 className="text-center">Todo List</h1>
-      <div className="grid grid-cols-2">
+      <h1 className="text-center text-xl">Todo List</h1>
+      <div className="grid grid-cols-2 gap-3">
         <input
           type="text"
           value={state.todoInput}
