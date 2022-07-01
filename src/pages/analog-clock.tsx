@@ -26,7 +26,7 @@ export default function AnalogClock() {
           xmlns="http://www.w3.org/2000/svg"
         >
           <circle cx="50" cy="50" r="50" className="fill-blue-500" />
-          {/* hour hand */}
+          {/* hours hand */}
           <line
             x1="50"
             y1="50"
@@ -39,7 +39,7 @@ export default function AnalogClock() {
               transformOrigin: '50% 50%',
             }}
           />
-          {/* minute hand */}
+          {/* minutes hand */}
           <line
             x1="50"
             y1="50"
@@ -52,7 +52,7 @@ export default function AnalogClock() {
               transformOrigin: '50% 50%',
             }}
           />
-          {/* sencond hand */}
+          {/* seconds hand */}
           <line
             x1="50"
             y1="50"
