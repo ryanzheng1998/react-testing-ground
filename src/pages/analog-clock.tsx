@@ -32,8 +32,7 @@ export default function AnalogClock() {
             y1="50"
             x2="50"
             y2="25"
-            stroke="black"
-            className="stroke-2"
+            className="stroke-2 stroke-black"
             style={{
               transform: `rotate(${hoursDegrees}deg)`,
               transformOrigin: '50% 50%',
@@ -45,8 +44,7 @@ export default function AnalogClock() {
             y1="50"
             x2="50"
             y2="10"
-            stroke="black"
-            className="stroke-2"
+            className="stroke-2 stroke-black"
             style={{
               transform: `rotate(${minutesDegrees}deg)`,
               transformOrigin: '50% 50%',
@@ -58,8 +56,7 @@ export default function AnalogClock() {
             y1="50"
             x2="50"
             y2="6"
-            stroke="red"
-            className="stroke-1"
+            className="stroke-1 stroke-red-500"
             style={{
               transform: `rotate(${secondsDegrees}deg)`,
               transformOrigin: '50% 50%',
