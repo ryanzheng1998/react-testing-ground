@@ -9,7 +9,7 @@ interface Todo {
   completed: boolean
 }
 
-interface State {
+export interface State {
   todos: { [id: string]: Todo }
   todoInput: string
 }
@@ -19,7 +19,7 @@ const initState: State = {
   todoInput: '',
 }
 
-type Action =
+export type Action =
   | { type: 'EditInput'; text: string }
   | { type: 'AddTodo'; id: string; description: string }
   | { type: 'ToggleTodoCompletion'; id: string }
