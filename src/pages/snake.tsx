@@ -26,7 +26,20 @@ export default function Snake() {
     )
       return
 
-    dispatch({ type: 'MoveSnake', direction: keyDirectionMapping[key] })
+    const oppositeDirection = {
+      up: 'down',
+      down: 'up',
+      left: 'right',
+      right: 'left',
+    }
+
+    if (state.direction === oppositeDirection[keyDirectionMapping[key]]) return
+
+    dispatch({
+      type: 'MoveSnake',
+      direction: keyDirectionMapping[key],
+      time: performance.now(),
+    })
   })
 
   useRequestAnimationFrame((time) => {

@@ -37,6 +37,8 @@ export type Action =
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'MoveSnake':
+      // the turn will not effect the snake immediately. It will wait until the next tick
+
       return {
         ...state,
         direction: action.direction,
