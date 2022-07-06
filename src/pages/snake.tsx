@@ -34,12 +34,12 @@ export default function Snake() {
   })
 
   const board = (() => {
-    const snake = state.currentSnake.map((position, index) => {
+    const snake = state.snake.map((position, index) => {
       return (
         <rect
           key={index}
-          width="1"
-          height="1"
+          width="0.9"
+          height="0.9"
           x="0"
           y="0"
           className="fill-blue-400"
