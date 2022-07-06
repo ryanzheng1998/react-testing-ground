@@ -3,6 +3,8 @@ import { useStore } from '@page-elements/snake/useStore'
 import { useEvent } from 'hooks/useEvent'
 import { useRequestAnimationFrame } from 'hooks/useRequestAnimationFrame'
 
+// change snake move from discrete to continuous
+
 export default function Snake() {
   const [state, dispatch] = useStore()
 
@@ -32,32 +34,26 @@ export default function Snake() {
   })
 
   const board = (() => {
-    const elements = new Array(config.height).fill(0).map((_, x) => {
-      const row = new Array(config.width).fill(0).map((_, y) => {
-        const isSnake = state.snake.some((pos) => pos.x === x && pos.y === y)
-        const isFood = state.food && state.food.x === x && state.food.y === y
-
-        return (
-          <rect
-            key={`${x}-${y}`}
-            width="0.9"
-            height="0.9"
-            x={x}
-            y={y}
-            style={{ fill: isSnake ? 'red' : isFood ? 'green' : '#3b82f6' }}
-          />
-        )
-      })
-
-      return row
+    const snake = state.currentSnake.map((position, index) => {
+      return (
+        <rect
+          key={index}
+          width="1"
+          height="1"
+          x="0"
+          y="0"
+          className="fill-blue-400"
+          style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
+        />
+      )
     })
-
     return (
       <svg
         viewBox={`0 0 ${config.width} ${config.height}`}
         className="w-64 aspect-square"
       >
-        {elements}
+        <rect width="100%" height="100%" className="fill-slate-200" />
+        {snake}
       </svg>
     )
   })()

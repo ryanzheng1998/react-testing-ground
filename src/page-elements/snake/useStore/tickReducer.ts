@@ -1,42 +1,52 @@
-import { Action, State } from '.'
+import { Action, Position, State } from '.'
 import { config } from '../config'
 
 export const tickReducer = (
   state: State,
   action: Action & { type: 'Tick' }
 ): State => {
-  //   const { snake, food, direction } = state
-  //   const head = snake[0]
-  //   const newHead = {
-  //     x: head.x + (direction === 'right' ? 1 : direction === 'left' ? -1 : 0),
-  //     y: head.y + (direction === 'down' ? 1 : direction === 'up' ? -1 : 0),
-  //   }
-  //   const newSnake = [newHead, ...snake.slice(0, -1)]
-  //   const newFood =
-  //     food === null
-  //       ? null
-  //       : food.x === newHead.x && food.y === newHead.y
-  //       ? null
-  //       : food
-  //   return { ...state, snake: newSnake, food: newFood }
+  const lastFrameCount = Math.floor(state.timeStamp / config.msPreFrame)
+  const currentFrameCount = Math.floor(action.time / config.msPreFrame)
+  const framesToCatchUp = currentFrameCount - lastFrameCount
+  const currentFrameTimeStamp = currentFrameCount * config.msPreFrame
+  const currentFrameCompletion = action.time - currentFrameTimeStamp
 
-  if (action.time - state.timeStamp < config.gameTick) return state
+  // this will be run on every frame, so it is better to use a for loop
+  let newIdealSnake = state.lastIdealSnake
 
-  // Cause this is a game there is no need for frame catching
-  // const timePass = action.time - state.timeStamp
-  // const stepToCatchUp = Math.floor(timePass / config.gameTick)
+  for (let i = 0; i < framesToCatchUp; i++) {
+    newIdealSnake = steppter(state, newIdealSnake)
+  }
 
-  const newSnake = step(state)
+  const nextIdealSnake = steppter(state, newIdealSnake)
+
+  // linear interpolation
+  const newCurrentSnake = newIdealSnake.map((position, index) => {
+    const nextPosition = nextIdealSnake[index]
+
+    if (nextPosition === undefined) return undefined
+
+    const x =
+      position.x +
+      ((nextPosition.x - position.x) * currentFrameCompletion) /
+        config.msPreFrame
+    const y =
+      position.y +
+      ((nextPosition.y - position.y) * currentFrameCompletion) /
+        config.msPreFrame
+    return { x, y }
+  })
 
   return {
     ...state,
     timeStamp: action.time,
-    snake: newSnake,
+    currentSnake: newCurrentSnake.filter((x): x is Position => x !== undefined),
+    lastIdealSnake: newIdealSnake,
   }
 }
 
-const step = (state: State) => {
-  const newSnake = state.snake.map((position) => {
+const steppter = (state: State, snake: State['currentSnake']) => {
+  const newSnake = snake.map((position) => {
     const newPosition = {
       x:
         position.x +

@@ -2,21 +2,23 @@ import React from 'react'
 import { moveSnakeReducer } from './moveSnakeReducer'
 import { tickReducer } from './tickReducer'
 
-interface Position {
+export interface Position {
   x: number
   y: number
 }
 
 export interface State {
   timeStamp: number
-  snake: Position[]
+  lastIdealSnake: Position[]
+  currentSnake: Position[]
   food: Position | null
   direction: 'up' | 'down' | 'left' | 'right'
 }
 
 const initialState: State = {
   timeStamp: 0,
-  snake: [{ x: 3, y: 3 }],
+  lastIdealSnake: [{ x: 3, y: 3 }],
+  currentSnake: [{ x: 3, y: 3 }],
   food: null,
   direction: 'right',
 }

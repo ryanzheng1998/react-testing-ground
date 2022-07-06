@@ -1,5 +1,6 @@
 export const config = {
-  width: 100,
-  height: 100,
-  gameTick: 100, // milseconds
+  width: 20,
+  height: 20,
+  msPreFrame: 100,
+  snakeVelocity: 100,
 } as const
