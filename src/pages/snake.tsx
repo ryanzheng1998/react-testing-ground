@@ -26,6 +26,9 @@ export default function Snake() {
     )
       return
 
+    // same direction
+    if (state.direction === keyDirectionMapping[key]) return
+
     const oppositeDirection = {
       up: 'down',
       down: 'up',
@@ -38,7 +41,6 @@ export default function Snake() {
     dispatch({
       type: 'MoveSnake',
       direction: keyDirectionMapping[key],
-      time: performance.now(),
     })
   })
 
