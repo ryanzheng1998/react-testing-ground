@@ -51,6 +51,7 @@ const reducer = (state: State, action: Action): State => {
       const timeDelta = action.time - state.timeStamp
       const updatePerMs = 1000 / state.speed
 
+      //
       return {
         ...state,
       }
